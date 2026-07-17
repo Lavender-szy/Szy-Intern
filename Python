@@ -1,0 +1,164 @@
+city='上海'
+population=24150
+print('我住在', city, ',人口约为', population, '万人。')
+
+#数据类型
+applenum = 5
+price = 3.5
+type = '红富士'
+RedOrNot = True
+print(type(applenum), type(price), type(type), type(RedOrNot))
+
+
+#数据类型转换
+a = "12.5"
+b = 7
+a = float(a)
+print(a+b , " 是最终答案")
+
+#条件判断
+score = 85
+if score >= 90:
+    print("等级：A")
+elif score >= 80:
+    print("等级：B")
+elif score >= 60:
+    print("等级：C")
+else:
+    print("等级：D")
+
+#while循环
+num = 1
+while num <= 5:
+    print(num)
+    num += 1
+print("循环结束了")
+
+#for循环、range、break和continue
+for i in range(1,11):
+    if i%2 == 0:
+        continue
+    if i > 7:
+        break
+    print(i)
+
+#列表
+#列表的创建、索引、修改、添加与删除
+fruits = ["苹果", "香蕉", "橘子"]
+fruits[0] = "草莓"
+fruits.append('葡萄')
+fruits.remove('橘子')
+print(fruits)
+
+#列表的切片与浅复制
+nums = [5,10,15,20,25,30,35]
+sub = nums[2:5]
+sub[0] = 999
+print(sub,nums)
+
+#元组
+t = (10,20,30,40,50)
+third = t[2]
+print(third)
+
+#字符串
+text = " Welcome to Python Class "
+text = text.strip()
+text = text.replace('Python','AI').upper()
+print(text)
+
+i = 1
+while i <= 6 :
+    if i == 3 or i == 4:
+        i+=1
+        continue
+    else:
+        print(i)
+        i += 1
+
+#函数
+def introduce(name,age=18):
+    print("我叫",name,"今年",age,"岁")
+introduce("小明")
+introduce("小红",age=20)
+
+#收集参数
+def sum_all(*numbers):
+    total = 0
+    for n in numbers:
+        total += n
+    print (total)
+
+sum_all(1, 2, 3)   # 输出：6
+sum_all(10, 20)      # 输出：30
+
+def print_all(*items):
+    for i in items:
+        print(i)
+print_all("苹果", "香蕉", "橘子") 
+#字符串里用\n是换行,print()本身就会换行,所以print()里不需要再加\n
+def show_info(**info):
+    for key,value in info.items():
+        print(key,":",value)
+show_info(name="张三", age=25, city="上海")
+
+def add(a,b):
+    return a+b
+result = add(10,20)
+print(result)
+
+#变量作用域
+#global关键字
+name = "Tom"
+def change_name():
+    global name
+    name = "Jerry"
+    print(name)
+change_name()
+print(name)
+#嵌套函数与闭包
+#函数可以赋值给变量，函数()形式的不能出现在等号左边
+
+#递归函数
+
+#匿名函数与filter
+numbers = [1,5,2,8,3,9,0]
+result = list(filter(lambda x:x>3,numbers))
+print(result)
+
+def is_prime(n):
+    if n<2:
+        return False
+    else:
+        for i in range(2,int(n**0.5)+1):
+            if n%i==0:
+                return False
+        return True
+print(is_prime(29))
+
+#字典
+student.get()
+#get()方法用于获取字典中指定键的值，如果键不存在，则返回默认值（如果提供了默认值(第二位参数)），否则返回None。
+student.update()
+student.pop()
+student.items()
+
+inventory = {
+    "apple": 5,
+    "banana": 2,
+    "orange": 8
+}
+grape_count = inventory.get("grape", 0)
+inventory.update({
+    "banana":6,
+    "pear":3,
+})
+removed = inventory.pop("apple")
+for key,value in inventory.items():
+    print(f"{key}: {value}")
+print("葡萄数量：", grape_count)
+print("删除的苹果数量：", removed)
+
+#item遍历大部分情况用于for循环，也可直接赋值给变量，输出一种新的特殊对象，类型为dict_items
+
+#集合
