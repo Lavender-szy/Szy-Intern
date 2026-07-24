@@ -1,0 +1,207 @@
+#Numpy库
+import numpy as np
+scores = np.array([
+    [78, 85, 92],
+    [66, 90, 88],
+    [95, 82, 79],
+    [84, 76, 91]
+])
+
+import numpy as np
+a1=np.arange(2,18,3)
+a2=np.linspace(0,1,6)
+a3=np.zeros((3,4))
+a4=np.ones((2,5))
+a5=np.full((2,3),8)
+print(a1,a1.shape,a2,a2.shape,a3,a3.shape,a4,a4.shape,a5,a5.shape)
+
+#通用函数
+import numpy as np
+
+measurements = np.array([18.5, 21.2, 19.8, 25.4, 17.9])
+corrections = np.array([0.5, -0.2, 0.3, -1.4, 0.1])
+target = 20
+corrected_measurements = measurements + corrections
+delta = corrected_measurements - target
+abs_delta = np.abs(delta)
+delta2 = np.square(delta)
+abs_delta05 = np.round(np.sqrt(abs_delta), 2)
+max_measurements = np.maximum(corrected_measurements, 18)
+min_measurements = np.minimum(corrected_measurements, 24)
+print(f"修正后的数据：{corrected_measurements}")
+print(f"差值：{delta}")
+print(f"绝对误差：{abs_delta}")
+print(f"差值平方：{delta2}")
+print(f"绝对误差的平方根：{abs_delta05}")
+print(f"最低限制后的数据：{max_measurements}")
+print(f"最高限制后的数据：{min_measurements}")
+#OS
+import os
+if not os.path.exists('study_data'):
+    os.makedirs('study_data')
+file_path = os.path.join('study_data','python.txt')
+with open(file_path, 'w') as f:
+    f.write('Python\nNumPy\nScipy')
+os.path.isfile(file_path)
+Path = os.path.abspath(file_path)
+Bits = os.path.getsize(file_path)
+print("文件路径:", Path)
+print("文件大小:", Bits, "字节")
+print("study_data中的内容：",os.listdir('study_data'))
+
+#数组形状操作
+import numpy as np
+
+numbers = np.arange(1, 13)
+matrix1 = numbers.reshape(3, 4)
+matrix2 = numbers.reshape(4,-1)
+transposed = matrix1.T
+flat1 = matrix1.ravel()
+flat2 = matrix1.flatten()
+flat1[0] = 100
+flat2[1] = 200
+print(matrix1)
+print(matrix2)
+print(transposed)
+print(flat1)
+print(flat2)
+#修改flat1后，matrix1改变了；修改flat2后，matrix2没有改变
+
+#数组的拆分与拼接
+import numpy as np
+
+group_a = np.array([
+    [80, 85, 90],
+    [70, 75, 80]
+])
+
+group_b = np.array([
+    [88, 92, 86],
+    [76, 81, 79]
+])
+
+student_ids = np.array([
+    [101],
+    [102]
+])
+all_scores = np.vstack((group_a, group_b))
+all_ids = np.array([
+    [101],
+    [102],
+    [103],
+    [104]
+])
+score_table = np.hstack((all_ids, all_scores))
+upper_part,lower_part = np.vsplit(score_table,2)
+left_two_parts,right_part = np.hsplit(all_scores,[2])
+print(all_scores,all_scores.shape)
+print(score_table,score_table.shape)
+print(upper_part,upper_part.shape)
+print(lower_part,lower_part.shape)
+print(left_two_parts,left_two_parts.shape)
+print(right_part,right_part.shape)
+
+#数组的广播
+import numpy as np
+
+scores = np.array([
+    [70, 80, 90, 60],
+    [85, 75, 65, 95],
+    [78, 88, 82, 76]
+])
+subject_adjustment = np.array([5, 0, -3, 2])
+after_subject_adjustment = scores + subject_adjustment
+student_adjustment = np.array([2, -4, 1])
+student_adjustment_T = student_adjustment.reshape(-1,1)
+final_scores = after_subject_adjustment+student_adjustment_T
+row = np.array([1, 2, 3, 4])
+column = np.array([10, 20, 30])
+column = column.reshape(3,1)
+grid = column + row
+print(scores,scores.shape)
+print(subject_adjustment,subject_adjustment.shape)
+print(student_adjustment_T,student_adjustment_T.shape)
+print(after_subject_adjustment)
+print(final_scores)
+print(grid,grid.shape)
+
+#布尔数组与条件筛选
+import numpy as np
+
+temperatures = np.array([
+    [18, 25, 31, 29],
+    [22, 35, 28, 16],
+    [30, 27, 33, 21]
+])
+hot_mask = temperatures >= 30
+hot_temperatures = temperatures[hot_mask]
+normal_temperatures = temperatures[(temperatures > 20)&(temperatures < 30)]
+extreme_temperatures = temperatures[(temperatures < 18)|(temperatures > 32)]
+labels = np.where(temperatures >= 30,1,0)
+num_surp30 = np.sum(labels)
+any_under17 = np.any(temperatures < 17)
+all_above15 = np.all(temperatures > 15)
+row_has_hot_day = np.any(temperatures >= 30,axis = 1)
+adjusted_temperatures = np.where(temperatures > 32,32,temperatures)
+adjusted_temperatures = temperatures.copy()
+adjusted_temperatures[temperatures > 32]=32
+
+#花式索引
+import numpy as np
+
+products = np.array([
+    [101, 50, 120],
+    [102, 80, 90],
+    [103, 40, 150],
+    [104, 70, 110],
+    [105, 60, 130]
+])
+selected_products = products[[4,1,3]]
+id_and_price = products[:,[0,2]]
+specific_values = products[[0,2,4],[2,1,0]]
+sub_table = products[[0,2,4]][:,[1,2]]
+modified_products = products.copy()
+modified_products[[1,3]][:,[1]]=[100,200]
+
+
+#类和对象
+class BankAccount:
+    def __init__(self, owner, balance=0):
+        self.owner = owner
+        self.balance = balance
+
+    def deposit(self, amount):
+        if amount > 0:
+            self.balance += amount
+        else:
+            raise ValueError("存款金额必须大于0")
+    def withdraw(self,amount):
+        if amount>0 and amount<=self.balance:
+            self.balance = self.balance - amount
+        elif amount <=0:
+            raise ValueError("取款金额必须大于0")
+        else:
+            raise ValueError("取款金额不能超过余额")
+    def show_info(self):
+        return(f"账户：{self.owner}，余额：{self.balance}")
+class SavingsAccount(BankAccount):
+    def __init__(self,owner,balance,interest_rate):
+        super().__init__(owner,balance)
+        self.interest_rate = interest_rate
+    def add_interest(self):
+        self.balance = self.balance*(1+self.interest_rate)
+    def show_info(self):
+        basic_info = super().show_info()
+        return(f"{basic_info}，利率：{self.interest_rate * 100}%")
+account = SavingsAccount("Alice", 1000, 0.05)
+
+account.deposit(200)
+account.withdraw(100)
+account.add_interest()
+
+print(account.show_info())
+
+try:
+    account.withdraw(2000)
+except ValueError as error:
+    print(error)
