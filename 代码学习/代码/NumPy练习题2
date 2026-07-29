@@ -1,0 +1,105 @@
+import numpy as np
+
+strategy_ids = np.array([201, 202, 203, 204, 205, 206])
+
+strategy_names = np.array([
+    "MOMENTUM",
+    "REVERSAL",
+    "QUALITY",
+    "LOW_VOL",
+    "VALUE",
+    "MULTI_FACTOR"
+])
+
+gross_returns = np.array([
+    [ 0.012,  0.018, -0.006,  0.025,  0.011, -0.009,  0.021,  0.015,  0.010,  0.013],
+    [-0.015,  0.008,  0.012, -0.011,  0.006,  0.018, -0.007,  0.010,  0.009,  0.004],
+    [ 0.030, -0.012,  0.022,  0.095, -0.018,  0.027,  0.014, -0.010,  0.020,  0.016],
+    [ 0.006,  0.009,  0.011,  0.007,  0.013,  0.008,  0.010,  0.012,  0.009,  0.011],
+    [-0.020, -0.055,  0.017,  0.009, -0.013,  0.021,  0.025,  0.004,  0.008,  0.006],
+    [ 0.015,  0.014,  0.013,  0.011,  0.016,  0.012,  0.014,  0.013,  0.015,  0.012]
+])
+#(6,10)
+
+benchmark_returns = np.array([
+    0.005, 0.004, -0.002, 0.008, 0.003,
+    0.006, 0.007, 0.002, 0.004, 0.005
+])
+#(10,)
+
+daily_costs = np.array([
+    0.0005,
+    0.0004,
+    0.0008,
+    0.0003,
+    0.0006,
+    0.0007
+])
+#(6,)
+#1清理异常收益
+cleaned_returns = gross_returns.copy()
+cleaned_returns[cleaned_returns>0.08]=0.08
+cleaned_returns[cleaned_returns<-0.08]=-0.08
+#2计算净超额收益
+net_returns = cleaned_returns - benchmark_returns - daily_costs.reshape(-1,1)
+#3计算每种策略的指标
+mean_return = np.mean(net_returns,axis=1)
+positive_day_count = np.sum(net_returns>0,axis=1)
+worst_return = np.min(net_returns,axis=1)
+has_large_loss = np.any(net_returns<-0.04,axis=1)
+positive_return_total = np.sum(np.where(net_returns<0,0,net_returns),axis=1)
+positive_return_total = np.sum(np.maximum(net_returns,0),axis=1)
+rms_return = np.sqrt(np.mean(np.square(net_returns),axis=1))
+#4按交易日进行布尔判断
+day_has_positive_strategy = np.any(net_returns>0,axis=0)
+all_startegies_positive = np.all(net_returns>0,axis=0)
+#5筛选合格策略
+qualified_mask = (mean_return>0.004)&(positive_day_count>=7)&(worst_return>=-0.04)
+qualified_names = strategy_names[qualified_mask]
+qualified_mean_returns = mean_return[qualified_mask]
+qualified_rms_returns = rms_return[qualified_mask]
+#6对合格策略排名
+qualified_order = np.argsort(qualified_mean_returns)[::-1]
+ranked_names = qualified_names[qualified_order]
+ranked_mean_returns = qualified_mean_returns[qualified_order]
+ranked_rms_returns = qualified_rms_returns[qualified_order]
+#7找出全部策略中平均收益最高的三种
+top_three_indices = np.argpartition(mean_return,3)[-3:]
+top_three_order = np.argsort(mean_return[top_three_indices])[::-1]
+top_three_indices = top_three_indices[top_three_order]
+top_three_names = strategy_names[top_three_indices]
+top_three_returns = mean_return[top_three_indices]
+#8取得三个指定坐标
+paired_values = net_returns[[0,2,5],[1,4,8]]
+#9
+cross_tables = net_returns[[0,2,5]][:,[1,4,8]]
+#10压力修改 避免链式索引
+stress_returns = net_returns.copy()
+stress_returns[[1,4],[2,7]] = [-0.05,-0.06]
+stress_returns[np.ix_([0,3],[0,9])] = 0
+#11随机抽取交易日
+rng = np.random.default_rng(2026)
+sampled_day_indices = rng.choice([0,10],size=4,replace=False)
+sorted_sampled_day_indices = np.sort(sampled_day_indices)
+sampled_returns = net_returns[sorted_sampled_day_indices]
+#12转换数据观察方向
+returns_by_day = net_returns.T
+selected_day_strategy_table = returns_by_day[[0,3,9]][:,[1,4]]
+#13创造汇总表
+summary_table = np.vstack(strategy_ids,mean_return,positive_day_count,worst_return,rms_return)
+parts = np.split(summary_table,3)
+identity_performance_table = summary_table[:3]
+risk_table = summary_table[3:]
+#14按交易日拆分收益表
+parts = np.split(net_returns,[4,7])
+first_period = net_returns[:4]
+middle_period = net_returns[4:7]
+last_period = net_returns[7:]
+#15
+flat_view = net_returns.ravel()
+flat_copy = net_returns.flatten()
+flat_copy[0] = 999
+flatten_did_not_change_original = True
+flat_copy = input()
+if net_returns[0] != 999:
+    flatten_did_not_change_original = False
