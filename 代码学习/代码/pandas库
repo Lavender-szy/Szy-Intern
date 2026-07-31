@@ -1,0 +1,21 @@
+import pandas as pd
+products = pd.DataFrame(
+    {
+    "商品名":["键盘","鼠标","水杯","笔记本"],
+    "分类":["电子产品","电子产品","生活用品","办公用品"],
+    "单价":[199.0,89.5,35.0,12.5],
+    "库存":[25,40,0,80],
+    "是否上架":[True,True,False,True]
+    },
+    index = ["P101","P102","P103","P104"]
+)
+print(products)
+print(products.shape)
+print(products.columns)
+print(products.index)
+print(products.dtypes)
+print(products.head(2),products.tail(2))
+products.info()
+print(products.describe())
+price_series = products["单价"]
+print(price_series.dtype)
